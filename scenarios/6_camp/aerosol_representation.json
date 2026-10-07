@@ -3,7 +3,7 @@
     {
       "name" : "PartMC single particle",
       "type" : "AERO_REP_SINGLE_PARTICLE",
-      "maximum computational particles" : 120,
+      "maximum computational particles" : 1100,
       "layers": [
               {
                       "name": "one_layer",
@@ -14,7 +14,7 @@
                               "black_carbon",
                               "other_PM"
                       ],
-                      "covers": "two_layer"
+                      "covers": "none"
               },
               {
                       "name": "two_layer",
@@ -25,9 +25,9 @@
                               "black_carbon",
                               "other_PM"
                       ],
-                      "covers": "three_layer"
+                      "covers": "one_layer"
               },
-             {
+              {
                       "name": "three_layer",
                       "phases": [
                               "dust",
@@ -36,7 +36,7 @@
                               "black_carbon",
                               "other_PM"
                       ],
-                      "covers": "none"
+                      "covers": "two_layer"
               }
       ]
     }

@@ -67,6 +67,20 @@
           "B" : [ 3.81e3, -2.13e1, 0.0, 0.0 ]
         },
         {
+          "type" : "CONDENSED_PHASE_DIFFUSION",
+          "species" : [{
+            "phase" : "organic_matter",
+            "name" : "ISOP-P1_aero"
+          }]
+        },
+        {
+          "type" : "CONDENSED_PHASE_DIFFUSION",
+          "species" : [{
+            "phase" : "organic_matter",
+            "name" : "ISOP-P2_aero"
+          }]
+        },
+        {
           "type" : "SIMPOL_PHASE_TRANSFER",
           "gas-phase species" : "ISOP-P2",
           "aerosol phase" : "organic_matter",

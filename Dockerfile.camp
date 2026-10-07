@@ -16,6 +16,14 @@ RUN dnf -y update \
         cmake \
     && dnf clean all
 
+# CAMP requires CMake >= 3.21, but Fedora 33 ships 3.19
+# (installed to /usr/local/bin, which takes precedence over /usr/bin)
+RUN ARCH=$(uname -m) \
+    && curl -LO https://github.com/Kitware/CMake/releases/download/v3.27.9/cmake-3.27.9-linux-${ARCH}.sh \
+    && sh cmake-3.27.9-linux-${ARCH}.sh --skip-license --prefix=/usr/local \
+    && rm cmake-3.27.9-linux-${ARCH}.sh \
+    && cmake --version
+
 # Build the SuiteSparse libraries for sparse matrix support
 # (-k included because of problem with SuiteSparse security certificate - 1 Aug 2021)
 RUN curl -kLO http://faculty.cse.tamu.edu/davis/SuiteSparse/SuiteSparse-5.1.0.tar.gz \
@@ -38,7 +46,7 @@ RUN curl -LO https://github.com/jacobwilliams/json-fortran/archive/6.1.0.tar.gz 
 #RUN git clone https://github.com/open-atmos/camp.git  
 RUN git clone https://github.com/jtgasparik/camp_.git \
     && cd camp_ \
-    && git checkout SIMPOL_multiple_layers \
+    && git checkout rxn_diffusion_jacobian \
     && cd ~
 
 # Install a modified version of CVODE
@@ -55,7 +63,7 @@ RUN cd camp_ \
     && make install \
     && cd ~
 
-ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}/usr/local/lib:/usr/local/lib64:/usr/local/jsonfortran-gnu-6.1.0/lib"
+ENV LD_LIBRARY_PATH="/usr/local/lib:/usr/local/lib64:/usr/local/jsonfortran-gnu-6.1.0/lib"
 #ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/local/lib:/usr/local/lib64:/usr/local/jsonfortran-gnu-6.1.0/lib"
 ENV PATH="${PATH}:/usr/local/jsonfortran-gnu-6.1.0/lib"
 
@@ -69,12 +77,12 @@ RUN  cd camp_ \
              #-D CMAKE_Fortran_FLAGS_DEBUG="-pg" \
              -D CMAKE_MODULE_LINKER_FLAGS="-pg" \
              -D ENABLE_GSL:BOOL=TRUE \
+             -D BUILD_SHARED_LIBS:BOOL=TRUE \
              .. \
-    && make \
-    && cd ~
+    && make
 
 # NOTE: Modify .dockerignore to whitelist files/directories to copy.
-COPY partmc_ /partmc/
+COPY . /partmc/
 
 RUN mkdir /build \
     && cd /build \

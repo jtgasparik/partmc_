@@ -20,7 +20,25 @@
     {
       "name" : "organic_matter",
       "type" : "AERO_PHASE",
-      "species" : [ "POA", "ISOP-P1_aero", "ISOP-P2_aero", "TERP-P1_aero", "TERP-P2_aero" ]
+      "species" : [ 
+          {
+            "name" : "POA"
+          },
+          {
+            "name" : "ISOP-P1_aero",
+            "diffusion coefficient [m2 s-1]": 1.5e-10
+          },
+          {
+            "name" : "ISOP-P2_aero",
+            "diffusion coefficient [m2 s-1]": 1.5e-10
+          },
+          {
+            "name" : "TERP-P1_aero"
+          },
+          {
+            "name" : "TERP-P2_aero"
+          }
+        ]
     },
     {
       "name" : "black_carbon",
